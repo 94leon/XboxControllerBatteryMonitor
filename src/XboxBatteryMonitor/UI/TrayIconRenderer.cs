@@ -17,13 +17,20 @@ public sealed record IconSpec(
 public static class TrayIconRenderer
 {
     /// <summary>
-    /// 绘制 32x32 托盘图标。布局：电池轮廓 (5,8)-(25,28)，内部填充区 x=7..23/y=10..26，
-    /// 正极头 (11,3) 10x5；等待/有线/无连接在电池中央画字母；多手柄时右下角橙色角标。
+    /// 以系统小图标尺寸绘制托盘图标（托盘槽位随 DPI 变大：96 DPI→16，192→32，300%→48）。
     /// </summary>
-    public static Bitmap Draw(IconSpec spec)
+    public static Bitmap Draw(IconSpec spec) => Draw(spec, GetTrayIconSize());
+
+    /// <summary>
+    /// 按指定像素尺寸绘制托盘图标。布局以 32x32 为逻辑坐标：电池轮廓 (5,8)-(25,28)，
+    /// 内部填充区 x=7..23/y=10..26，正极头 (11,3) 10x5；等待/有线/无连接在电池中央画字母；
+    /// 多手柄时右下角橙色角标。size≠32 时整体等比缩放，保证高 DPI 下原生分辨率绘制不模糊。
+    /// </summary>
+    public static Bitmap Draw(IconSpec spec, int size)
     {
-        var bmp = new Bitmap(32, 32);
+        var bmp = new Bitmap(size, size);
         using Graphics g = Graphics.FromImage(bmp);
+        if (size != 32) g.ScaleTransform(size / 32f, size / 32f);
         g.SmoothingMode = SmoothingMode.AntiAlias;
         g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 
@@ -86,10 +93,22 @@ public static class TrayIconRenderer
         if (handle != IntPtr.Zero) Native.DestroyIcon(handle);
     }
 
+    /// <summary>系统小图标尺寸（托盘槽位实际大小）：96 DPI→16，144→24，192→32，更高缩放→48。异常返回值回退 32。</summary>
+    public static int GetTrayIconSize()
+    {
+        int small = Native.GetSystemMetrics(Native.SM_CXSMICON);
+        return small is >= 16 and <= 64 ? small : 32;
+    }
+
     private static class Native
     {
+        public const int SM_CXSMICON = 49;
+
         [DllImport("user32.dll")]
         public static extern bool DestroyIcon(IntPtr hIcon);
+
+        [DllImport("user32.dll")]
+        public static extern int GetSystemMetrics(int nIndex);
     }
 }
 

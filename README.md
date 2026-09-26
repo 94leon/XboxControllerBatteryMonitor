@@ -8,6 +8,7 @@ Windows 系统托盘小工具：实时显示 Xbox 手柄电量，低电量时 To
 - Xbox 无线适配器 / USB 连接的手柄：XInput 电量（4 档估算百分比）
 - 两种连接方式可同时在线（混合场景自动去重，蓝牙读数优先）
 - 托盘图标轮换显示多个手柄，右键菜单列出全部
+- 高分屏适配：Per-Monitor V2 DPI 感知，托盘图标按系统小图标尺寸原生绘制
 - 低电量双档提醒（默认警告 20% / 危险 10%，可自定义），阈值跨越时触发一次，不重复轰炸
 - 震动提醒可关闭
 
@@ -20,6 +21,15 @@ dotnet run --project src/XboxBatteryMonitor
 ```
 
 设置保存在 `%LocalAppData%\XboxBatteryMonitor\settings.json`，日志在同目录 `log.txt`。
+
+## 打包发布
+
+```bash
+dotnet publish src/XboxBatteryMonitor -p:PublishProfile=src/XboxBatteryMonitor/Properties/PublishProfiles/FolderProfile.pubxml
+```
+
+产物为**框架依赖的单文件 exe**（`src/XboxBatteryMonitor/bin/Release/publish/XboxBatteryMonitor.exe`，约 25 MB），
+目标机器需已安装 .NET 8 Desktop Runtime (x64)。版本号读取仓库根目录的 `VERSION` 文件。
 
 ## 已知限制
 

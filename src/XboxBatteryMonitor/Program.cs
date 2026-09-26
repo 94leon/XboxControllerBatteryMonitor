@@ -26,7 +26,8 @@ internal static class Program
     /// <summary>WinForms 应用级配置。必须在构造任何组件（含 AppContext）之前完成。</summary>
     internal static void ConfigureApplication()
     {
-        Application.SetHighDpiMode(HighDpiMode.SystemAware);
+        // PerMonitorV2：混合 DPI 多显示器下窗口/菜单按所在屏原生渲染，不被系统位图拉伸（模糊）
+        Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
         InstallUiSynchronizationContext();

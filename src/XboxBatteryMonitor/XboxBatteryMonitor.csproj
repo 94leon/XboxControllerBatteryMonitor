@@ -8,6 +8,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>XboxBatteryMonitor</RootNamespace>
     <AssemblyName>XboxBatteryMonitor</AssemblyName>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <VersionFileContent>$([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)\..\..\VERSION').Trim())</VersionFileContent>
+    <Version>$(VersionFileContent)</Version>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.3" />

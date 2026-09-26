@@ -21,6 +21,7 @@ public sealed class SettingsForm : Form
         MaximizeBox = false;
         MinimizeBox = false;
         StartPosition = FormStartPosition.CenterScreen;
+        AutoScaleMode = AutoScaleMode.Dpi;   // 供 PMv2 运行时跨屏 DPI 变化重缩放
         ClientSize = new Size(330, 170);
 
         var warningLabel = new Label { Text = "警告阈值（%）", Location = new Point(12, 15), AutoSize = true };
@@ -57,6 +58,18 @@ public sealed class SettingsForm : Form
         CancelButton = cancel;
 
         Controls.AddRange(new Control[] { warningLabel, _warning, criticalLabel, _critical, _rumble, save, cancel });
+        ApplyDpiScale();
+    }
+
+    /// <summary>
+    /// 以 96 DPI 为基准按设备 DPI 缩放整个控件树。手写窗体必须显式缩放：
+    /// WinForms 会把 AutoScaleDimensions 重新捕获为当前 DPI（实测 .NET 8 168 DPI 下读回 168 而非 96），
+    /// 框架自动缩放系数恒为 1；字体由 DPI 感知进程随 DPI 放大，无需在此处理。
+    /// </summary>
+    internal void ApplyDpiScale(int? deviceDpi = null)
+    {
+        float factor = (deviceDpi ?? DeviceDpi) / 96f;
+        if (factor != 1f) Scale(new SizeF(factor, factor));
     }
 
     private void OnSave(object? sender, EventArgs e)

@@ -8,9 +8,9 @@ public class TrayIconRendererTests : IDisposable
 {
     private readonly List<Bitmap> _bitmaps = new();
 
-    private Bitmap Draw(IconSpec spec)
+    private Bitmap Draw(IconSpec spec, int size = 32)
     {
-        Bitmap bmp = TrayIconRenderer.Draw(spec);
+        Bitmap bmp = TrayIconRenderer.Draw(spec, size);
         _bitmaps.Add(bmp);
         return bmp;
     }
@@ -62,16 +62,39 @@ public class TrayIconRendererTests : IDisposable
         Assert.True(c.A > 0 && c.R > 200 && c.G > 200 && c.B > 200);   // 浅色填充
     }
 
-    private static int CountOrangePixels(Bitmap bmp)
+    private static int CountOrangePixels(Bitmap bmp) => CountOrangePixels(bmp, 19, 19, 30, 30);
+
+    private static int CountOrangePixels(Bitmap bmp, int x0, int y0, int x1, int y1)
     {
         int count = 0;
-        for (int x = 19; x <= 30; x++)
-            for (int y = 19; y <= 30; y++)
+        for (int x = x0; x <= x1; x++)
+            for (int y = y0; y <= y1; y++)
             {
                 Color c = bmp.GetPixel(x, y);
                 if (c.A > 0 && c.R > 200 && c.G < 120 && c.B < 120) count++;   // OrangeRed 色系
             }
         return count;
+    }
+
+    [Fact]
+    public void Draw_LargerSize_ScalesLayoutProportionally()
+    {
+        // 高分屏按系统小图标尺寸原生绘制：48px 时电池轮廓与角标按 1.5 倍比例出现在缩放后位置
+        Bitmap bmp = Draw(new IconSpec(100, Waiting: false, Wired: false, NoConnection: false, DisplayIndex: 3, LightTheme: true), 48);
+        Assert.Equal(48, bmp.Width);
+        Assert.Equal(48, bmp.Height);
+        // 左轮廓逻辑 x=5..7 ×1.5 → 约 8..11
+        Assert.True(CountDarkPixels(bmp, 6, 16, 12, 36) > 0, "放大绘制后电池左轮廓缺失");
+        // 角标逻辑 (18,18)-(31,31) ×1.5 → 约 27..47
+        Assert.True(CountOrangePixels(bmp, 28, 28, 46, 46) > 20, "放大绘制后角标缺失");
+    }
+
+    [Fact]
+    public void GetTrayIconSize_ReturnsSensibleSize()
+    {
+        // 托盘槽位 = 系统小图标尺寸（96 DPI→16，192→32，300%→48）；异常值需回退到 32
+        int size = TrayIconRenderer.GetTrayIconSize();
+        Assert.InRange(size, 16, 64);
     }
 
     [Fact]
