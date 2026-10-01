@@ -16,7 +16,7 @@ public sealed class SettingsForm : Form
 
     public SettingsForm(AppSettings current)
     {
-        Text = "XboxBatteryMonitor 设置";
+        Text = "XboxControllerBatteryMonitor 设置";
         FormBorderStyle = FormBorderStyle.FixedDialog;
         MaximizeBox = false;
         MinimizeBox = false;

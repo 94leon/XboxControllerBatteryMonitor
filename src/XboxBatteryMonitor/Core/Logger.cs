@@ -1,11 +1,11 @@
 namespace XboxBatteryMonitor.Core;
 
-/// <summary>极简文件日志：%LocalAppData%\XboxBatteryMonitor\log.txt。日志失败静默，不影响主流程。</summary>
+/// <summary>极简文件日志：%LocalAppData%\XboxControllerBatteryMonitor\log.txt。日志失败静默，不影响主流程。</summary>
 public static class Logger
 {
     private static readonly object Gate = new();
     private static readonly string LogDir =
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "XboxBatteryMonitor");
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "XboxControllerBatteryMonitor");
     private static readonly string LogFile = Path.Combine(LogDir, "log.txt");
     private const int MaxLines = 2000;      // 超过 512KB 截断到最近 2000 行，防无限增长
     private const long TrimThreshold = 512 * 1024;

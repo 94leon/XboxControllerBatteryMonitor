@@ -9,7 +9,7 @@ internal static class Program
     [STAThread]
     private static void Main()
     {
-        using var mutex = new Mutex(true, "XboxBatteryMonitor.SingleInstance", out bool createdNew);
+        using var mutex = new Mutex(true, "XboxControllerBatteryMonitor.SingleInstance", out bool createdNew);
         if (!createdNew) return;   // 已有实例 → 静默退出（规格 §8）
 
         Logger.Info("启动");

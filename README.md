@@ -20,7 +20,7 @@ Windows 系统托盘小工具：实时显示 Xbox 手柄电量，低电量时 To
 dotnet run --project src/XboxBatteryMonitor
 ```
 
-设置保存在 `%LocalAppData%\XboxBatteryMonitor\settings.json`，日志在同目录 `log.txt`。
+设置保存在 `%LocalAppData%\XboxControllerBatteryMonitor\settings.json`，日志在同目录 `log.txt`。
 
 ## 打包发布
 
@@ -33,7 +33,7 @@ publish.cmd
 脚本会自动完成：结束正在运行的程序实例（否则 exe 被占用，发布时无法覆盖）、
 清空旧的 `publish/` 目录（不残留旧文件）、发布单文件 exe。
 
-产物为**框架依赖的单文件 exe**（`publish/XboxBatteryMonitor.exe`，约 25 MB），
+产物为**框架依赖的单文件 exe**（`publish/XboxControllerBatteryMonitor.exe`，约 25 MB），
 目标机器需已安装 .NET 8 Desktop Runtime (x64)。版本号读取仓库根目录的 `VERSION` 文件。
 
 不用脚本的等价命令（需先手动退出正在运行的程序）：

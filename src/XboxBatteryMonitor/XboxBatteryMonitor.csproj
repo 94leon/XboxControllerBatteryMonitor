@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>XboxBatteryMonitor</RootNamespace>
-    <AssemblyName>XboxBatteryMonitor</AssemblyName>
+    <AssemblyName>XboxControllerBatteryMonitor</AssemblyName>
     <DebugType>embedded</DebugType>
   </PropertyGroup>
 

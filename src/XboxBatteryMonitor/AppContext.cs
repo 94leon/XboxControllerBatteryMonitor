@@ -13,7 +13,7 @@ public sealed class AppContext : ApplicationContext
     private const int IconCycleMs = 5000;   // 多手柄图标轮换间隔
 
     private static readonly string DataDir = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "XboxBatteryMonitor");
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "XboxControllerBatteryMonitor");
 
     private readonly SynchronizationContext _ui;
     private readonly string _settingsPath = Path.Combine(DataDir, "settings.json");
@@ -42,7 +42,7 @@ public sealed class AppContext : ApplicationContext
         _tray = new NotifyIcon
         {
             Visible = true,
-            Text = "XboxBatteryMonitor",
+            Text = "XboxControllerBatteryMonitor",
             ContextMenuStrip = new ContextMenuStrip(),
         };
         _tray.DoubleClick += (_, _) => ShowSettings();
@@ -208,9 +208,9 @@ public sealed class AppContext : ApplicationContext
     {
         string text;
         if (controllers.Count == 0)
-            text = !bluetoothOn && !xinputAvailable ? "XboxBatteryMonitor（无可用通道）"
-                 : !bluetoothOn ? "XboxBatteryMonitor（蓝牙已关闭）"
-                 : "XboxBatteryMonitor（未发现手柄）";
+            text = !bluetoothOn && !xinputAvailable ? "XboxControllerBatteryMonitor（无可用通道）"
+                 : !bluetoothOn ? "XboxControllerBatteryMonitor（蓝牙已关闭）"
+                 : "XboxControllerBatteryMonitor（未发现手柄）";
         else
             text = string.Join(" | ", controllers.Select(c => $"{c.DisplayName} {DescribeBattery(c)}"));
 
