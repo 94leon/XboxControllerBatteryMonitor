@@ -1,4 +1,4 @@
-# XboxBatteryMonitor
+# XboxControllerBatteryMonitor
 
 Windows 系统托盘小工具：实时显示 Xbox 手柄电量，低电量时 Toast 通知 + 手柄震动提醒。
 
@@ -61,3 +61,14 @@ dotnet test
 ```
 
 设计文档见 `docs/design.md`，真实硬件手动验证清单见 `docs/manual-verification.md`。
+
+## 许可
+
+MIT，见 [LICENSE](LICENSE)。
+
+## 致谢
+
+开发过程中参考了以下两个项目的 API 用法与技术思路（本项目为独立实现，未复制代码）：
+
+- [XB1ControllerBatteryIndicator](https://github.com/NiyaShy/XB1ControllerBatteryIndicator)（GPLv2）——XInput 电量读取行为、低电量 Toast 触发策略、多手柄图标轮换的产品形态
+- [XBatteryStatus](https://github.com/tommaier123/XBatteryStatus)（GPLv3）——.NET 8 + WinForms + WinRT BLE 的完整先例、GDI+ 托盘图标绘制与 GDI 句柄防泄漏实践
