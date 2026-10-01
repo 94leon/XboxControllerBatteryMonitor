@@ -24,12 +24,25 @@ dotnet run --project src/XboxBatteryMonitor
 
 ## 打包发布
 
+双击仓库根目录的 `publish.cmd`（或在命令行执行）：
+
+```bash
+publish.cmd
+```
+
+脚本会自动完成：结束正在运行的程序实例（否则 exe 被占用，发布时无法覆盖）、
+清空旧的 `publish/` 目录（不残留旧文件）、发布单文件 exe。
+
+产物为**框架依赖的单文件 exe**（`publish/XboxBatteryMonitor.exe`，约 25 MB），
+目标机器需已安装 .NET 8 Desktop Runtime (x64)。版本号读取仓库根目录的 `VERSION` 文件。
+
+不用脚本的等价命令（需先手动退出正在运行的程序）：
+
 ```bash
 dotnet publish src/XboxBatteryMonitor -p:PublishProfile=src/XboxBatteryMonitor/Properties/PublishProfiles/FolderProfile.pubxml
 ```
 
-产物为**框架依赖的单文件 exe**（`src/XboxBatteryMonitor/bin/Release/publish/XboxBatteryMonitor.exe`，约 25 MB），
-目标机器需已安装 .NET 8 Desktop Runtime (x64)。版本号读取仓库根目录的 `VERSION` 文件。
+如需免装 .NET 运行时的独立版，在上述命令追加 `-p:SelfContained=true -p:EnableCompressionInSingleFile=true`（体积会增大不少）。
 
 ## 已知限制
 
