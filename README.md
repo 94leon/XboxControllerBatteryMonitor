@@ -12,15 +12,15 @@ Windows 系统托盘小工具：实时显示 Xbox 手柄电量，低电量时 To
 - 低电量双档提醒（默认警告 20% / 危险 10%，可自定义），阈值跨越时触发一次，不重复轰炸
 - 震动提醒可关闭
 
-## 使用
+## 下载使用
 
-要求 Windows 10 19041+ / Windows 11 与 .NET 8 Desktop Runtime。
+从 [Releases](https://github.com/94leon/XboxControllerBatteryMonitor/releases) 下载最新版
+`XboxControllerBatteryMonitor.exe`（约 25 MB 单文件，免安装，双击即用）。
 
-```bash
-dotnet run --project src/XboxBatteryMonitor
-```
-
-设置保存在 `%LocalAppData%\XboxControllerBatteryMonitor\settings.json`，日志在同目录 `log.txt`。
+- 系统要求：Windows 10 19041+ / Windows 11，以及 [.NET 8 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/8.0)（未安装时微软官网可一键安装）
+- 托盘图标右键菜单：查看全部手柄电量、`设置…`（调整提醒阈值、关闭震动）、`退出`
+- 设置保存在 `%LocalAppData%\XboxControllerBatteryMonitor\settings.json`，日志在同目录 `log.txt`
+- 纯本地小工具：无后台、无联网、无开机自启（需要自启可自行把 exe 快捷方式放进启动文件夹）
 
 ## 打包发布
 
@@ -55,7 +55,10 @@ dotnet publish src/XboxBatteryMonitor -p:PublishProfile=src/XboxBatteryMonitor/P
 
 ## 开发
 
+从源码运行与测试：
+
 ```bash
+dotnet run --project src/XboxBatteryMonitor
 dotnet build
 dotnet test
 ```
