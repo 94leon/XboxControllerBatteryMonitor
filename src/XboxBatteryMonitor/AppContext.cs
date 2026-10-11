@@ -129,7 +129,9 @@ public sealed class AppContext : ApplicationContext
         if (_controllers.Count == 0)
         {
             spec = new IconSpec(null, Waiting: false, Wired: false, NoConnection: true,
-                DisplayIndex: 1, LightTheme: ThemeHelper.IsLightTheme());
+                DisplayIndex: 1, LightTheme: ThemeHelper.IsLightTheme(),
+                Style: _settings.TrayIconStyle,
+                WarningThreshold: _settings.WarningThreshold, CriticalThreshold: _settings.CriticalThreshold);
         }
         else
         {
@@ -141,7 +143,9 @@ public sealed class AppContext : ApplicationContext
                 Wired: current.Battery is BatteryValue.Wired,
                 NoConnection: false,
                 DisplayIndex: _controllers.Count > 1 ? index + 1 : 1,
-                LightTheme: ThemeHelper.IsLightTheme());
+                LightTheme: ThemeHelper.IsLightTheme(),
+                Style: _settings.TrayIconStyle,
+                WarningThreshold: _settings.WarningThreshold, CriticalThreshold: _settings.CriticalThreshold);
         }
         _cycleIndex++;
 

@@ -57,17 +57,28 @@ public sealed record ControllerStatus(
     ConnectionKind Kind,
     BatteryValue Battery);
 
+/// <summary>托盘图标展示样式。</summary>
+public enum TrayIconStyle
+{
+    Battery = 0,          // 电池图形（默认）：填充柱高度表示电量
+    Percent = 1,          // 电量数值：大号数字，颜色分档
+    BatteryAndPercent = 2, // 图形+数值：电池轮廓 + 中央数字（不画填充柱，颜色分档）
+}
+
 /// <summary>应用设置。约束：0 &lt; 危险阈值 &lt; 警告阈值 &lt; 100。</summary>
 public sealed record AppSettings(
     int WarningThreshold = 20,
     int CriticalThreshold = 10,
-    bool RumbleEnabled = true)
+    bool RumbleEnabled = true,
+    TrayIconStyle TrayIconStyle = TrayIconStyle.Battery)
 {
     public bool IsValid =>
         CriticalThreshold > 0 && CriticalThreshold < WarningThreshold && WarningThreshold < 100;
 
-    /// <summary>非法配置回退为默认值。</summary>
-    public static AppSettings Sanitized(AppSettings settings) => settings.IsValid ? settings : new AppSettings();
+    /// <summary>非法配置回退为默认值；托盘样式越界单独回退，不连累其他合法设置。</summary>
+    public static AppSettings Sanitized(AppSettings settings) => settings.IsValid
+        ? settings with { TrayIconStyle = Enum.IsDefined(settings.TrayIconStyle) ? settings.TrayIconStyle : TrayIconStyle.Battery }
+        : new AppSettings();
 }
 
 /// <summary>告警档位。数值大小即严重程度（排序用）。</summary>

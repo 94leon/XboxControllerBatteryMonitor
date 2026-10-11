@@ -65,7 +65,7 @@
   - `Level(BatteryLevel)`（XInput 4 档：Empty=10 / Low=40 / Medium=70 / Full=100 的估算百分比）
   - `Wired`（USB 供电）
   - `Waiting`（刚连接尚未上报电量）
-- `AppSettings`：`WarningThreshold`（默认 20）、`CriticalThreshold`（默认 10）、`RumbleEnabled`（默认 true）
+- `AppSettings`：`WarningThreshold`（默认 20）、`CriticalThreshold`（默认 10）、`RumbleEnabled`（默认 true）、`TrayIconStyle`（默认 Battery）
 - 约束：`0 < CriticalThreshold < WarningThreshold < 100`，加载时校验并回退默认值
 
 ### 4.2 IXInputApi / XInputApi（`Monitors/`）
@@ -108,6 +108,9 @@
 ### 4.8 TrayIconRenderer（`UI/`）
 
 - GDI+ 在 32×32 画布绘制电池轮廓 + 电量填充（百分比或档位映射）
+- 托盘图标样式（`TrayIconStyle`，可在设置中切换）：`Battery` 填充柱（默认）；`Percent` 纯数值大号数字；
+  `BatteryAndPercent` 电池轮廓 + 中央数字（去掉填充柱避免与数字重叠）。数值模式下电量档位由数字颜色表达：
+  低于危险阈值红色、低于警告阈值琥珀、正常为主题前景色
 - 多手柄时图标左下角绘制小序号角标（1/2/3…）
 - 特殊符号：`?`（等待读数）、`w`（有线）、空电池轮廓（无连接）
 - 换图标时 `GetHicon()` → 使用后 `DestroyIcon()`，防 GDI 句柄泄漏
@@ -123,7 +126,7 @@
 
 ### 4.11 SettingsForm + SettingsStore（`UI/` + `Core/`）
 
-- 设置窗体：警告阈值、危险阈值（NumericUpDown，0–99）、震动开关（CheckBox）
+- 设置窗体：警告阈值、危险阈值（NumericUpDown，0–99）、托盘图标样式（ComboBox 三选一）、震动开关（CheckBox）
 - 持久化：JSON 文件 `%LocalAppData%\XboxBatteryMonitor\settings.json`；损坏/缺失时回退默认值
 
 ### 4.12 Program.cs

@@ -18,12 +18,12 @@ public class SettingsFormTests
 
         form.ApplyDpiScale(168);
 
-        Assert.Equal(new Size(578, 298), form.ClientSize);            // 330×170 ×1.75
+        Assert.Equal(new Size(578, 368), form.ClientSize);            // 330×210 ×1.75
         Assert.Equal(new Point(280, 21), warning.Location);           // (160,12) ×1.75
         // NumericUpDown 缩放后会被内部布局按宿主环境字体度量轻微收缩（96 DPI 测试宿主 102，真机 168 DPI 105），取范围
         Assert.InRange(warning.Width, 100, 105);
         Button save = form.Controls.OfType<Button>().Single(b => b.Text == "保存");
-        Assert.Equal(new Rectangle(280, 219, 131, 40), save.Bounds);  // (160,125,75,23) ×1.75
+        Assert.Equal(new Rectangle(280, 264, 131, 40), save.Bounds);  // (160,151,75,23) ×1.75
     }
 
     [Fact]
@@ -31,6 +31,17 @@ public class SettingsFormTests
     {
         using var form = new SettingsForm(new AppSettings(20, 10, true));
         form.ApplyDpiScale(96);
-        Assert.Equal(new Size(330, 170), form.ClientSize);
+        Assert.Equal(new Size(330, 210), form.ClientSize);
+    }
+
+    [Fact]
+    public void TrayStyleCombo_ReflectsSetting_AndBuildSettingsCarriesIt()
+    {
+        using var form = new SettingsForm(new AppSettings(20, 10, true, TrayIconStyle.Percent));
+        var combo = form.Controls.OfType<ComboBox>().Single();
+        Assert.Equal(1, combo.SelectedIndex);   // 电池图形=0 / 电量数值=1 / 图形+数值=2
+
+        combo.SelectedIndex = 2;
+        Assert.Equal(new AppSettings(20, 10, true, TrayIconStyle.BatteryAndPercent), form.BuildSettings());
     }
 }

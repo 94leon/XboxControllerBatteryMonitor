@@ -21,6 +21,22 @@ public class SettingsStoreTests : IDisposable
     }
 
     [Fact]
+    public void SaveThenLoad_RoundTripsTrayIconStyle()
+    {
+        SettingsStore.Save(_path, new AppSettings(35, 18, false, TrayIconStyle.BatteryAndPercent));
+        Assert.Equal(new AppSettings(35, 18, false, TrayIconStyle.BatteryAndPercent), SettingsStore.Load(_path));
+    }
+
+    [Fact]
+    public void UndefinedTrayIconStyle_FallsBackToBattery()
+    {
+        // 旧版本 settings.json 无此字段 → 默认 Battery（MissingFile_ReturnsDefaults 已覆盖）；
+        // 手改出越界枚举值 → 消毒回 Battery，不连累其他合法设置
+        SettingsStore.Save(_path, new AppSettings(20, 10, true, (TrayIconStyle)99));
+        Assert.Equal(new AppSettings(20, 10, true, TrayIconStyle.Battery), SettingsStore.Load(_path));
+    }
+
+    [Fact]
     public void CorruptFile_ReturnsDefaults()
     {
         File.WriteAllText(_path, "{{{ 不是 JSON");
