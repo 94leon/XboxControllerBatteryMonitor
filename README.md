@@ -64,6 +64,7 @@ dotnet test
 ```
 
 设计文档见 `docs/design.md`，真实硬件手动验证清单见 `docs/manual-verification.md`。
+应用图标由 `tools/make-icon.ps1` 生成到 `assets/app.ico`：以 `assets/controller-source.png` 为源做像素级缩放与炭黑色重映射，并在左侧叠加白色竖向电量电池（约 72% 填充）。修改后重新运行该脚本即可。
 
 ## 许可
 
@@ -75,3 +76,5 @@ MIT，见 [LICENSE](LICENSE)。
 
 - [XB1ControllerBatteryIndicator](https://github.com/NiyaShy/XB1ControllerBatteryIndicator)（GPLv2）——XInput 电量读取行为、低电量 Toast 触发策略、多手柄图标轮换的产品形态
 - [XBatteryStatus](https://github.com/tommaier123/XBatteryStatus)（GPLv3）——.NET 8 + WinForms + WinRT BLE 的完整先例、GDI+ 托盘图标绘制与 GDI 句柄防泄漏实践
+
+应用图标的手柄图形基于 [icons8](https://icons8.com) 的 game controller 图标改色使用（`assets/controller-source.png`）。
